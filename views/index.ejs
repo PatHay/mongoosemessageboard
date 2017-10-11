@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Message Board</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+    
+    .posts{
+        width: 70%;
+    }
+    .comments{
+        width: 50%;
+        font-size: 10pt;
+    }
+    #display{
+        width: 80%;
+        margin: auto;
+    }
+
+    </style>
+</head>
+
+    <body>
+        <div id="body">
+            <h1>The Dojo Message Board</h1>
+            <hr>
+            <form method="POST" action="/message" id="form1">
+                <label class="label">Name:</label><input type="text" name="name"><br>
+                <label class="label">Message:</label><br><textarea name="message" rows="10" cols="100"></textarea>
+            </form>
+            <button type="submit" form="form1" value="Submit" class="buttons">Post message</button>
+
+            <% if(typeof(errors) != 'undefined' ) { %>
+                <% for (var x in errors) { %>
+                <h3><%= errors[x].message %></h3>
+                <% } %>
+            <% } else { %>
+                <div id="display">
+                    <% for (x in messages) { %>
+
+                        <h4>Name:  <%= messages[x].name %></h4>
+                        <p class="posts">Message:  <%= messages[x].text %></p>
+                        <% for (y of messages[x]._comments) { %>
+                            <p class="comments">Name:  <%= y.name %></p>
+                            <p class="comments">Comment:  <%= y.text %></p>
+                        <% } %>
+
+                        <form method="POST" action="/message/<%= messages[x]._id %>" id="form2">
+                            <label class="label">Name:</label><input type="text" name="name"><br>
+                            <label class="label">Comment:</label><br><textarea name="comment" rows="5" cols="50"></textarea>
+                        </form>
+
+                        <button type="submit" form="form2" value="Submit" class="buttons">Post Comment</button>
+                        
+                    <% } %>
+                </div>
+            <% } %>
+    </body>
+</html>
